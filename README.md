@@ -21,9 +21,6 @@ FastAdmin是一款基于ThinkPHP+Bootstrap的极速后台开发框架。
 * 多语言支持，服务端及客户端支持
 * 支持大文件分片上传、剪切板粘贴上传、拖拽上传，进度条显示，图片上传前压缩
 * 支持表格固定列、固定表头、跨页选择、Excel导出、模板渲染等功能
-* 强大的第三方应用模块支持([CMS](https://www.fastadmin.net/store/cms.html)、[博客](https://www.fastadmin.net/store/blog.html)、[知识付费问答](https://www.fastadmin.net/store/ask.html)、[在线投票系统](https://www.fastadmin.net/store/vote.html)、[B2C商城](https://www.fastadmin.net/store/shopro.html)、[B2B2C商城](https://www.fastadmin.net/store/wanlshop.html))
-* 支持CMS、博客、知识付费问答无缝整合[Xunsearch全文搜索](https://www.fastadmin.net/store/xunsearch.html)
-* 第三方小程序支持([CMS小程序](https://www.fastadmin.net/store/cms.html)、[预订小程序](https://www.fastadmin.net/store/ball.html)、[问答小程序](https://www.fastadmin.net/store/ask.html)、[点餐小程序](https://www.fastadmin.net/store/unidrink.html)、[B2C小程序](https://www.fastadmin.net/store/shopro.html)、[B2B2C小程序](https://www.fastadmin.net/store/wanlshop.html)、[博客小程序](https://www.fastadmin.net/store/blog.html))
 * 整合第三方短信接口(阿里云、腾讯云短信)
 * 无缝整合第三方云存储(七牛云、阿里云OSS、又拍云)功能，支持云储存分片上传
 * 第三方富文本编辑器支持(Summernote、Kindeditor、百度编辑器)
@@ -31,34 +28,15 @@ FastAdmin是一款基于ThinkPHP+Bootstrap的极速后台开发框架。
 * 第三方支付(微信、支付宝)无缝整合，微信支持PC端扫码支付
 * 丰富的插件应用市场
 
-## 安装使用
-
-https://doc.fastadmin.net
-
-## 在线演示
-
-https://demo.fastadmin.net
-
-用户名：admin
-
-密　码：123456
-
-提　示：演示站数据无法进行修改，请下载源码安装体验全部功能
-
-## 界面截图
-![控制台](https://images.gitee.com/uploads/images/2020/0929/202947_8db2d281_10933.gif "控制台")
-
 ## 问题反馈
 
 在使用中有任何问题，请使用以下联系方式联系我们
 
-交流社区: https://ask.fastadmin.net
+QQ群: [134772524](http://wpa.qq.com/msgrd?v=3&uin=134772524&site=qq&menu=yes)
 
-QQ群: [636393962](https://jq.qq.com/?_wv=1027&k=487PNBb)(满) [708784003](https://jq.qq.com/?_wv=1027&k=5ObjtwM)(满) [964776039](https://jq.qq.com/?_wv=1027&k=59qjU2P)(3群) [749803490](https://jq.qq.com/?_wv=1027&k=5tczi88)(满) [767103006](https://jq.qq.com/?_wv=1027&k=5Z1U751)(满) [675115483](https://jq.qq.com/?_wv=1027&k=54I6mts)(6群)
+电报交流群: [@moguyunGroup](https://t.me/moguyunGroup)
 
-Github: https://github.com/karsonzhang/fastadmin
-
-Gitee: https://gitee.com/karson/fastadmin
+Github: https://github.com/moguyunBot/moguyun.pro
 
 ## 特别鸣谢
 
@@ -66,29 +44,21 @@ Gitee: https://gitee.com/karson/fastadmin
 
 ThinkPHP：http://www.thinkphp.cn
 
-AdminLTE：https://adminlte.io
+笔下光年：https://gitee.com/yinqi/Light-Year-Admin-Using-Iframe-v4
 
 Bootstrap：http://getbootstrap.com
 
 jQuery：http://jquery.com
 
-Bootstrap-table：https://github.com/wenzhixin/bootstrap-table
-
-Nice-validator: https://validator.niceue.com
-
-SelectPage: https://github.com/TerryZ/SelectPage
-
 Layer: https://layer.layui.com
-
-DropzoneJS: https://www.dropzonejs.com
 
 
 ## 版权信息
 
-FastAdmin遵循Apache2开源协议发布，并提供免费使用。
+moguyun遵循Apache2开源协议发布，并提供免费使用。
 
 本项目包含的第三方源码和二进制文件之版权信息另行标注。
 
-版权所有Copyright © 2017-2022 by FastAdmin (https://www.fastadmin.net)
+版权所有Copyright © 2017-2022 by moguyun (https://www.moguyun.pro)
 
 All rights reserved。
