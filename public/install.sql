@@ -89,7 +89,6 @@ INSERT INTO `rule` VALUES (20, 0, '系统设置', 'mdi-settings', 'config/index'
 INSERT INTO `rule` VALUES (129, 0, '用户管理', 'mdi mdi-account-box-multiple-outline', 'user/index', 1, 1683797696, 1693124803, 0, 1, '[{\"key\":\"\",\"value\":\"\"}]', '');
 INSERT INTO `rule` VALUES (172, 0, '应用中心', 'mdi-apps', 'addon/index', 1, 1698579985, 1698586874, 0, 1, '[]', '');
 INSERT INTO `rule` VALUES (185, 172, '应用入口', '', 'addon/entrance', 1, 1698684529, 1698684572, 0, 0, '[]', '');
-INSERT INTO `rule` VALUES (190, 0, '升级框架', 'mdi-cloud-upload-outline', 'upgrade/index', 1, 1698853468, 1698853468, 0, 1, NULL, '');
 
 -- ----------------------------
 -- Table structure for user

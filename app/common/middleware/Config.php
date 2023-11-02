@@ -14,7 +14,7 @@ class Config
         
         while (($dir = readdir($dirs)) !== FALSE) {
             if(in_array($dir,['.','..']))continue;
-            if(is_file(public_path().'addons/'.$dir.'/configs.php')){
+            if(is_dir(public_path().'addons/'.$dir)&&is_file(public_path().'addons/'.$dir.'/configs.php')){
                 foreach(include(public_path().'addons/'.$dir.'/configs.php') as $key=>$val){
                     $configs[$dir.'_'.$key] = $val;
                 }

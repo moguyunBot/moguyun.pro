@@ -53,20 +53,22 @@ class Service extends \think\Service
             $routes = (array) Config::get('addons.route', []);
             foreach (scandir(public_path() . 'addons') as $v) {
                 if ($v == '.' || $v == '..') continue;
-                $route_file = public_path() . 'addons/' . $v . '/route.php';
-                if (is_file($route_file)) {
-                    $route_arr = include $route_file;
-                    if(is_array($route_arr)){
-                        foreach($route_arr as $kk=>$vv){
-                            if(is_array($vv)){
-                                foreach($vv['rule'] as $kkk=>$vvv){
-                                    $route_arr[$kk]['rule'][$kkk] = $v.'/'.$vvv;
+                if(is_dir(public_path() . 'addons/' . $v)){
+                    $route_file = public_path() . 'addons/' . $v . '/route.php';
+                    if (is_file($route_file)) {
+                        $route_arr = include $route_file;
+                        if(is_array($route_arr)){
+                            foreach($route_arr as $kk=>$vv){
+                                if(is_array($vv)){
+                                    foreach($vv['rule'] as $kkk=>$vvv){
+                                        $route_arr[$kk]['rule'][$kkk] = $v.'/'.$vvv;
+                                    }
+                                }else{
+                                    $route_arr[$kk] = $v.'/'.$vv;
                                 }
-                            }else{
-                                $route_arr[$kk] = $v.'/'.$vv;
                             }
+                            $routes = array_merge($routes, $route_arr);
                         }
-                        $routes = array_merge($routes, $route_arr);
                     }
                 }
             }
