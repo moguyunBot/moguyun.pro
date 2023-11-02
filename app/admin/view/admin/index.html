@@ -1,0 +1,51 @@
+{extend name="$base"}
+{block name="main"}
+<div class="card">
+    <div class="card-body">
+        <a href="{:url('add')}" class="btn btn-success mb-2">添加</a>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>用户名</th>
+                        <th>登录IP</th>
+                        <th>状态</th>
+                        <th>添加时间</th>
+                        <th>更新时间</th>
+                        <th class="text-center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach $admins as $v}
+                    <tr>
+                        <td>{$v.id}</td>
+                        <td>{$v.username}</td>
+                        <td>{$v.last_login_ip?:''}</td>
+                        <td>{$v.status==1?'正常':'冻结'}</td>
+                        <td>{$v.create_time}</td>
+                        <td>{$v.update_time}</td>
+                        <td class="text-center">
+                            {if $v.id!=1||$admin.group_id==1}
+                            <a class="btn btn-sm btn-warning mr-1" href="{:url('edit',['id'=>$v.id])}">修改</a>
+                            {if $v.id!=1}
+                            <button class="btn btn-sm btn-danger mr-1" @click="del({id:{$v.id}})">删除</button>
+                            {/if}
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+            {$admins|raw}
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    new Vue({
+        el:'#app'
+    })
+</script>
+{/block}

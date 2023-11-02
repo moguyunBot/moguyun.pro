@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="keywords" content="LightYear,LightYearAdmin,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description" content="Light Year Admin V4是一个基于Bootstrap v4.4.1的后台管理系统的HTML模板。">
+<meta name="author" content="yinq">
+<title>登录页面四 - 光年(Light Year Admin V4)后台管理系统模板</title>
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="stylesheet" type="text/css" href="/static/css/materialdesignicons.min.css">
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/static/css/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/static/css/style.min.css">
+<link rel="stylesheet" href="/static/sweetalert2/sweetalert2.css">
+
+<style>
+.login-box {
+    background-color: rgba(255, 255, 255, .25);
+}
+.login-box p:last-child {
+    margin-bottom: 0px;
+}
+.login-form .form-control {
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+}
+.login-form .has-feedback {
+    position: relative;
+}
+.login-form .has-feedback .form-control {
+    padding-left: 36px;
+}
+.login-form .has-feedback .mdi {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: auto;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    z-index: 4;
+    color: #dcdcdc;
+    display: block;
+    text-align: center;
+    pointer-events: none;
+}
+.login-form .has-feedback.row .mdi {
+    left: 15px;
+}
+.login-form .form-control::-webkit-input-placeholder{ 
+    color: rgba(255, 255, 255, .8);
+} 
+.login-form .form-control:-moz-placeholder{ 
+    color: rgba(255, 255, 255, .8);
+} 
+.login-form .form-control::-moz-placeholder{ 
+    color: rgba(255, 255, 255, .8);
+} 
+.login-form .form-control:-ms-input-placeholder{ 
+    color: rgba(255, 255, 255, .8);
+}
+.login-form .custom-control-label::before {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+</style>
+</head>
+  
+<body class="center-vh" style="background-image: url(/static/images/login-bg-4.jpg); background-size: cover;">
+<div class="login-box p-5 w-420 mb-0 mr-2 ml-2" id="app">
+  <div class="text-center mb-3">
+    <a href="index.html"> <img alt="light year admin" src="/static/images/logo-sidebar.png"> </a>
+  </div>
+  <form @submit.prevent="submit" class="login-form">
+    <div class="form-group has-feedback">
+      <span class="mdi mdi-account" aria-hidden="true"></span>
+      <input type="text" class="form-control" v-model="form.username" placeholder="用户名">
+    </div>
+
+    <div class="form-group has-feedback">
+      <span class="mdi mdi-lock" aria-hidden="true"></span>
+      <input type="password" class="form-control" v-model="form.password" placeholder="密码">
+    </div>
+    
+    <div class="form-group has-feedback row">
+      <div class="col-7">
+        <span class="mdi mdi-check-all form-control-feedback" aria-hidden="true"></span>
+        <input type="text" v-model="form.captcha" class="form-control" placeholder="验证码">
+      </div>
+      <div class="col-5 text-right">
+        <img src="{:captcha_src()}" ref="captcha" class="pull-right" style="cursor: pointer;height: 36px;" onclick="this.src='{:captcha_src()}?d='+Math.random();" title="点击刷新" alt="captcha">
+      </div>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-block btn-primary" type="submit">立即登录</button>
+    </div>
+  </form>
+  
+  <p class="text-center text-white">Copyright © 2023 <a href="http://www.moguyun.pro">蘑菇云框架</a>. All right reserved</p>
+</div>
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script src="/static/sweetalert2/sweetalert2.js"></script>
+<script type="text/javascript" src="/static/layer/layer.js"></script>
+<script type="text/javascript" src="/static/js/vue.min.js"></script>
+<script type="text/javascript" src="/static/js/main.min.js"></script>
+<script type="text/javascript">
+
+    var vue = new Vue({
+        el:'#app',
+        data(){
+            return {
+                form:{
+                    username:'',
+                    password:'',
+                    google_code:'',
+                    captcha:'',
+                }
+            }
+        },
+        methods:{
+            submit(){
+                this.post('',this.form,res=>{
+                    if(res.code==0){
+                        this.$refs.captcha.src = '{:captcha_src()}?d='+Math.random()
+                    }
+                    this.alert(res);
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

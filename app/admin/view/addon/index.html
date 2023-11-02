@@ -1,0 +1,70 @@
+{extend name="$base"}
+{block name="main"}
+<div class="card">
+    <div class="card-body">
+        <div class="mb-2">
+            <input type="file" style="display:none" @change="upload" accept=".zip">
+            <button class="btn btn-info" onclick="$(this).prev('input').click()">上传应用</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>介绍</th>
+                        <th>版本</th>
+                        <th class="text-center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach $addons as $v}
+                    <tr>
+                        <td>{$v.title}</td>
+                        <td>{$v.description}</td>
+                        <td>{$v.version}</td>
+                        <td class="text-center">
+                            {if $v.status==0}
+                            <button class="btn btn-xs btn-success" @click="install('{$v.name}')">安装</button>
+                            {else}
+                            <a class="btn btn-xs btn-success" href="{:url('entrance',['addon_name'=>$v.name])}">进入</a>
+                            {if $admin.group.rules=='*'}
+                            <button class="btn btn-xs btn-danger" @click="uninstall('{$v.name}')">卸载</button>
+                            {/if}
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {};
+        },
+        methods:{
+            upload(e){
+                e.target
+                let data = new FormData()
+                data.append('file',e.target.files[0])
+                this.ajax('',data,res=>{
+                    this.alert(res);
+                })
+            },
+            install(name){
+                this.post('install',{name:name})
+            },
+            uninstall(name){
+                this.confirm('确定要卸载'+name+'应用吗?',()=>{
+                    this.post('uninstall',{name:name})
+                })
+            }
+        }
+    })
+</script>
+{/block}

@@ -1,0 +1,114 @@
+{extend name="$base"}
+{block name="main"}
+<div class="card">
+    <div class="card-body">
+        <form @submit.prevent="submit">
+            <div class="form-group">
+                <label>父级菜单</label>
+                <select v-model="form.pid" class="form-control">
+                    <option value="0">顶级</option>
+                    {foreach $rules as $v}
+                    <option value="{$v.id}" data-is_menu="{$v.is_menu}">{$v.title}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>菜单名称</label>
+                <input type="text" class="form-control" required v-model="form.title">
+            </div>
+            <div class="form-group">
+                <label>icon</label>
+                <input type="text" class="form-control" v-model="form.icon">
+            </div>
+            <div class="form-group">
+                <label>uri</label>
+                <input type="text" class="form-control" v-model="form.uri">
+            </div>
+            <div class="form-group">
+                <label>扩展参数</label>
+                <div class="mb-2">
+                    <button class="btn btn-success" type="button" @click="options_add">添加</button>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item" v-for="(v,k) in form.options">
+                        <div class="form-row">
+                            <div class="col-auto">
+                                <input type="text" class="form-control" v-model="v.key" placeholder="键">
+                            </div>
+                            <div class="col-auto">
+                                <input type="text" class="form-control" v-model="v.value" placeholder="值">
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-danger" type="button" @click="options_del(k)">删除</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="form-group">
+                <label>排序</label>
+                <input type="text" class="form-control" v-model="form.sort">
+            </div>
+            <div class="form-group">
+              <label>菜单</label>
+              <div class="clearfix">
+	            <div class="custom-control custom-radio custom-control-inline">
+	              <input type="radio" id="is_menu1" v-model="form.is_menu" value="1" class="custom-control-input">
+	              <label class="custom-control-label" for="is_menu1">显示</label>
+	            </div>
+                <div class="custom-control custom-radio custom-control-inline">
+	              <input type="radio" id="is_menu0" v-model="form.is_menu" value="0" class="custom-control-input">
+	              <label class="custom-control-label" for="is_menu0">隐藏</label>
+	            </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>状态</label>
+              <div class="clearfix">
+	            <div class="custom-control custom-radio custom-control-inline">
+	              <input type="radio" id="status1" v-model="form.status" value="1" class="custom-control-input">
+	              <label class="custom-control-label" for="status1">启用</label>
+	            </div>
+                <div class="custom-control custom-radio custom-control-inline">
+	              <input type="radio" id="status0" v-model="form.status" value="0" class="custom-control-input">
+	              <label class="custom-control-label" for="status0">禁用</label>
+	            </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">确 定</button>
+        </form>
+          
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    new Vue({
+        el:'#app',
+        data() {
+            return {
+                form: {
+                    pid: '{:request()->get("pid",0)}',
+                    title: '',
+                    icon: '',
+                    uri: '',
+                    options:[],
+                    sort: 0,
+                    is_menu: 0,
+                    status: 1,
+                },
+            }
+        },
+        methods:{
+            options_add(){
+                this.form.options.push({key:'',value:''})
+            },
+            options_del(k){
+                this.form.options = this.form.options.filter((item,index)=>{
+                    return k!=index
+                })
+            }
+        }
+    })
+</script>
+{/block}

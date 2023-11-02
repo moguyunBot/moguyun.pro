@@ -1,0 +1,44 @@
+{extend name="$base"}
+{block name="main"}
+<div class="card">
+    <div class="card-body">
+        <form @submit.prevent="submit" ref="form">
+            <div class="form-group">
+                <label>用户名</label>
+                <input type="text" class="form-control" disabled value="{$admin.username}">
+            </div>
+            <div class="form-group">
+                <label>旧密码</label>
+                <input type="text" class="form-control" required v-model="form.old_password">
+            </div>
+            <div class="form-group">
+                <label>登录密码</label>
+                <input type="password" class="form-control" v-model="form.new_password">
+            </div>
+            <div class="form-group">
+                <label>确认登录密码</label>
+                <input type="password" class="form-control" v-model="form.confirm_password">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">提交</button>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    new Vue({
+        el:'#app',
+        data() {
+            return {
+                form: {
+                    old_password:'',
+                    new_password:'',
+                    confirm_password:'',
+                }
+            }
+        }
+    })
+</script>
+{/block}

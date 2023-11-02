@@ -1,0 +1,67 @@
+{extend name="$base"}
+{block name="main"}
+<div class="card">
+    <div class="card-toolbar d-flex flex-column flex-md-row">
+      <div class="toolbar-btn-action">
+        <a class="btn btn-primary btn-sm m-r-5" href="{:url('add',['addon_name'=>$Request.get.addon_name])}">新增</a>
+      </div>
+      
+      <form class="search-bar ml-md-auto" method="get" action="#!" role="form">
+        <input type="hidden" name="search_field" id="search-field" value="title" />
+        <div class="input-group ml-md-auto">
+          <div class="input-group-prepend">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="search-btn">标题</button>
+            <div class="dropdown-menu" style="">
+              <a class="dropdown-item" href="#!" data-field="title">标题</a>
+              <a class="dropdown-item" href="#!" data-field="cat_name">栏目</a>
+            </div>
+          </div>
+          <input type="text" class="form-control" name="keyword" placeholder="请输入名称">
+        </div>
+      </form>
+    </div>
+    <div class="card-body">
+      
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>编号</th>
+              <th>节点名称</th>
+              <th>uri</th>
+              <th>菜单</th>
+              <th>状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+              {foreach $rules as $v}
+            <tr>
+              <td>{$v.id}</td>
+              <td>{$v.title}</td>
+              <td>{$v.uri}</td>
+              <td>{$v.is_menu?'<font class="text-success">显示</font>':'<font class="text-pink">隐藏</font>'}</td>
+              <td>{$v.status?'<font class="text-success">启用</font>':'<font class="text-pink">停用</font>'}</td>
+              <td>
+                  <a href="{:url('add',['pid'=>$v.id,'addon_name'=>$Request.get.addon_name])}" class="btn btn-sm btn-success">添加子节点</a>
+                  <a href="{:url('edit',['id'=>$v.id,'addon_name'=>$Request.get.addon_name])}" class="btn btn-sm btn-warning">修改</a>
+                  <button class="btn btn-sm btn-pink" @click="del({id:{$v.id}})">删除</button>
+              </td>
+            </tr>
+                {/foreach}
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    new Vue({
+        el:'#app',
+        methods:{
+            
+        }
+    })
+</script>
+{/block}

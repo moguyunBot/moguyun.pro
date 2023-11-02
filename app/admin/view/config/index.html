@@ -1,0 +1,179 @@
+{extend name="$base"}
+{block name="head"}
+<link href="/static/wangeditor/style.css" rel="stylesheet">
+
+<style>
+    .wrapper {
+        border: 1px solid #ccc;
+        z-index: 100; /* 按需定义 */
+    }
+    .toolbar { 
+        border-bottom: 1px solid #ccc; 
+    }
+    .editor { 
+        height: 500px; 
+    }
+    .delete{
+        /*position: absolute;*/
+    }
+</style>
+{/block}
+{block name="main"}
+<div class="card">
+    <div class="card-body">
+        <ul class="nav nav-tabs nav-tabs-line">
+            {foreach $configs as $k=>$v}
+            <li class="nav-item">
+                <a href="{:url('',['key'=>$k])}" class="nav-link {if $Request.get.key==$k}active{/if}">{$v.name}</a>
+            </li>
+            {/foreach}
+        </ul>
+        
+        <div class="tab-content mt-2" id="myTabContent">
+			<div class="tab-pane fade active show">
+			    <form @submit.prevent="submit">
+                    <div class="form-group" v-for="(v,k) in form[key].configs" :key="k">
+                        <label v-text="v.name"></label>
+                        <input v-if="v.type=='text'" type="text" class="form-control" v-model="v.value">
+                        <input v-if="v.type=='password'" type="password" class="form-control" v-model="v.value">
+                        <input v-if="v.type=='number'" type="number" class="form-control" v-model="v.value">
+                        <textarea v-if="v.type=='textarea'" class="form-control" rows="8" style="resize:none;" v-model="v.value"></textarea>
+                        <div v-if="v.type=='image'" class="input-group">
+                            <input type="file" class="d-none" @change="imageChange($event,k)">
+                            <button v-if="!v.value" class="btn btn-outline-dark" type="button" onclick="$(this).prev('input').click()">上传图片</button>
+                            <div v-if="v.value">
+                                <img :src="v.value" onclick="$(this).parent('div').parent('div').find('input').click()" style="width:150px;">
+                                <br>
+                                <button type="button" class="btn btn-dabger btn-xs delete" @click="v.value = ''">删除</button>
+                            </div>
+                        </div>
+                        <div v-if="v.type=='video'" class="input-group">
+                            <input type="file" class="d-none" @change="videoChange($event,k)">
+                            <button v-if="!v.value" class="btn btn-outline-dark" type="button" onclick="$(this).prev('input').click()">上传视频</button>
+                            <div v-if="v.value">
+                                <img :src="v.value" onclick="$(this).parent('div').parent('div').find('input').click()" style="width:150px;">
+                                <br>
+                                <button type="button" class="btn btn-dabger btn-xs delete" @click="v.value = ''">删除</button>
+                            </div>
+                        </div>
+                        <div v-if="v.type=='images'" class="input-group">
+                            <input type="file" class="d-none" multiple @change="imagesChange($event,k)">
+                            <button v-if="v.value.length==0" class="btn btn-outline-dark" type="button" onclick="$(this).prev('input').click()">上传图片</button>
+                            <template v-if="v.value.length" v-for="(v1,k1) in v.value">
+                                <div style="width:150px;">
+                                    <img :src="v1" onclick="$(this).parent('div').parent('div').find('input').click()">
+                                    <button type="button" class="btn btn-dabger btn-xs delete" @click="v.value.splice(k1,1)">删除</button>
+                                </div>
+                            </template>
+                        </div>
+                        <div v-if="v.type=='radio'" class="input-group">
+                            <div class="form-check form-check-inline" v-for="(v1,k1) in v.params">
+                                <input class="form-check-input" type="radio" :id="'radio'+k+k1" v-model="v.value" :value="v1.key"/>
+                                <label class="form-check-label" :for="'radio'+k+k1">{{v1.name}}</label>
+                            </div>
+                        </div>
+                        <div v-if="v.type=='checkbox'" class="input-group">
+                            <div class="form-check form-check-inline" v-for="(v1,k1) in v.params">
+                                <input class="form-check-input" type="checkbox" :id="'checkbox'+k+k1" v-model="v.value" :value="v1.key"/>
+                                <label class="form-check-label" :for="'checkbox'+k+k1">{{v1.name}}</label>
+                            </div>
+                        </div>
+                        <select v-if="v.type=='select'" class="form-control" v-model="v.value">
+                            <option value="">请选择</option>
+                            <option v-for="v1 of v.params" :value="v1.key">{{v1.name}}</option>
+                        </select>
+                        <template v-if="v.type=='editor'">
+                            <div class="wrapper">
+                                <div :class="'toolbar key'+k"><!-- 工具栏 --></div>
+                                <div :class="'editor key'+k"><!-- 编辑器 --></div>
+                            </div>
+                        </template>
+                        <small class="help-block">调用方式：<code>config('{{key}}.{{k}}')</code></small>
+                        <br />
+                        <small v-if="v.desc" class="help-block">备注：{{v.desc}}</small>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary m-r-5">确 定</button>
+                    </div>
+                </form>
+			</div>
+		</div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script src="/static/wangeditor/index.js"></script>
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                form:{:json_encode($configs)},
+                key:'{$Request.get.key}'
+            }
+        },
+        created(){
+            const { createEditor, createToolbar } = window.wangEditor
+            let _this = this;
+            setTimeout(()=>{
+                for(let k in this.form){
+                    if(this.form[k].type=='editor'){
+                        const editorConfig = {
+                            placeholder: '请填写内容',
+                            MENU_CONF:{
+                                uploadImage:{
+                                    server:"{:url('upload_image')}",
+                                    fieldName:'image'
+                                },
+                                uploadVideo:{
+                                    server:"{:url('upload_video')}",
+                                    fieldName:'video',
+                                }
+                            },
+                            onChange(editor) {
+                                _this.form[k].value = editor.getHtml()
+                            }
+                        }
+                        
+                        const editor = createEditor({
+                            selector: '.editor.key'+k,
+                            html: _this.form[k].value,
+                            config: editorConfig,
+                            mode: 'default', // or 'simple'
+                        })
+                        
+                        const toolbarConfig = {}
+                        
+                        const toolbar = createToolbar({
+                            editor,
+                            selector: '.toolbar.key'+k,
+                            config: toolbarConfig,
+                            mode: 'default', // or 'simple'
+                        })
+                    }
+                }
+            },500)
+        },
+        methods:{
+            // submit(){
+            //     console.log(this.form);
+            // },
+            imageChange(e,k){
+                this.form[this.key+k+'value'] = e.target.files[0]
+                this.form[this.key].configs[k].value = URL.createObjectURL(e.target.files[0])
+            },
+            videoChange(e,k){
+                this.form[this.key+k+'value'] = e.target.files[0]
+                this.form[this.key].configs[k].value = URL.createObjectURL(e.target.files[0])
+            },
+            imagesChange(e,k){
+                this.form[this.key+k+'value'] = e.target.files
+                this.form[this.key].configs[k].value = [];
+                for(let v of e.target.files){
+                    this.form[this.key].configs[k].value.push(URL.createObjectURL(v))
+                }
+            },
+        }
+    })
+</script>
+{/block}

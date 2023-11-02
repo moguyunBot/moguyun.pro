@@ -1,0 +1,31 @@
+{extend name="$base"}
+{block name="main"}
+dassd
+{/block}
+{block name="script"}
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            
+        },
+        mounted(){
+            // localStorage.setItem('user_id', '123456');
+            let params = new URLSearchParams(window.Telegram.WebApp.initData);
+            let data = new FormData();
+            params.forEach((v,k)=>{
+                data.append(k,v);
+            })
+            this.ajax("{:url('login/auth')}",data,res=>{
+                if(res.code==1){
+                    // window.location.href = "{$Request.get.url}"
+                }else{
+                    this.alert(res);
+                }
+            })
+            alert(localStorage.getItem('user_id'));
+        }
+    })
+</script>
+{/block}
