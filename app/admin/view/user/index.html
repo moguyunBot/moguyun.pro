@@ -8,12 +8,9 @@
                     <tr>
                         <th>编号</th>
                         <th>用户名</th>
-                        <th>邮箱</th>
                         <th>余额</th>
-                        <th>用户等级</th>
                         <th>状态</th>
                         <th>注册时间</th>
-                        <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -21,15 +18,9 @@
                     <tr>
                         <td>{$v.id}</td>
                         <td>{$v.username}</td>
-                        <td>{$v.email}</td>
                         <td>{$v.balance}</td>
-                        <td>{$v.level_name}</td>
                         <td>{$v.status==1?'正常':'冻结'}</td>
                         <td>{$v.create_time}</td>
-                        <td>
-                            <a class="btn btn-sm btn-warning" href="{:url('edit',['id'=>$v.id])}">修改</a>
-                            <button class="btn btn-sm btn-danger" @click="del({id:{$v.id}})">删除</button>
-                        </td>
                     </tr>
                     {/foreach}
                 </tbody>
