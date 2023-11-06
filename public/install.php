@@ -35,8 +35,6 @@ if (is_file('../config/install.lock') && $_GET['step'] != 5) {
     header('location:/');
 }
 
-
-$version = file_get_contents("../config/version");
 $site_name = '蘑菇云框架';
 
 $_date = date('Y');
@@ -289,7 +287,6 @@ $install_css
       <h5></h5>
       <h2>{$site_name}安装向导</h2>
     </div>
-    <div class="version">版本: $version</div>
   </div>
 </div>
 EOF;
