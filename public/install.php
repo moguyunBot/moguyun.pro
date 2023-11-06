@@ -308,7 +308,8 @@ switch ($_GET['step']) {
     case 1:
         $env_items = array();
         $dirfile_items = array(
-            array('type' => 'dir', 'path' => '../config')
+            array('type' => 'dir', 'path' => '../config'),
+            array('type' => 'file', 'path' => '../.env')
         );
         $func_items = array(
             array('name' => 'PDO', 'type' => 'class'),
