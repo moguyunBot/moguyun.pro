@@ -114,7 +114,7 @@ class Config extends Base
         if ($this->request->isPost()) {
             try {
                 $file = $this->request->file('video');
-                validate(['video' => 'filesize:200048000|fileExt:mp4,wmv,avi'])->check(['video' => $file]);
+                validate(['video' => 'filesize:200048000|fileExt:mp4,wmv,avi,mov'])->check(['video' => $file]);
                 $savename = \think\facade\Filesystem::disk('public')->putFile('topic', $file);
                 $savename = '/storage/' . $savename;
             } catch (\think\exception\ValidateException $e) {

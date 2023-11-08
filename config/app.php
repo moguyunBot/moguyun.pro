@@ -19,13 +19,13 @@ return [
     'app_map'          => [],
     // 域名绑定（自动多应用模式有效）
     'domain_bind'      => [
-        // 'admin'     =>  'admin',
+        'admin'     =>  'admin',
         // 'www'       =>  'index',
         // 'api'       =>  'api',
     ],
     // 禁止URL访问的应用列表（自动多应用模式有效）
     'deny_app_list'    => [
-        // 'admin'
+        'admin'
     ],
 
     // 异常页面的模板文件

@@ -88,7 +88,7 @@
                                 <div :class="'editor key'+k"><!-- 编辑器 --></div>
                             </div>
                         </template>
-                        <small class="help-block">调用方式：<code>config('{{key}}.{{k}}')</code></small>
+                        <small class="help-block">调用方式：<code>config('{if $Request.get.addon_name}{$Request.get.addon_name}_{/if}{{key}}.{{k}}')</code></small>
                         <br />
                         <small v-if="v.desc" class="help-block">备注：{{v.desc}}</small>
                     </div>
@@ -116,9 +116,10 @@
             const { createEditor, createToolbar } = window.wangEditor
             let _this = this;
             setTimeout(()=>{
-                for(let k in this.form){
-                    if(this.form[k].type=='editor'){
-                        const editorConfig = {
+                    console.log(this.form)
+                for(let k in this.form[this.key].configs){
+                    if(this.form[this.key].configs[k].type=='editor'){
+                        let editorConfig = {
                             placeholder: '请填写内容',
                             MENU_CONF:{
                                 uploadImage:{
@@ -131,23 +132,21 @@
                                 }
                             },
                             onChange(editor) {
-                                _this.form[k].value = editor.getHtml()
+                                _this.form[_this.key].configs[k].value = editor.getHtml()
                             }
                         }
                         
-                        const editor = createEditor({
+                        let editor = createEditor({
                             selector: '.editor.key'+k,
-                            html: _this.form[k].value,
+                            html: _this.form[this.key].configs[k].value,
                             config: editorConfig,
                             mode: 'default', // or 'simple'
                         })
                         
-                        const toolbarConfig = {}
-                        
-                        const toolbar = createToolbar({
+                        createToolbar({
                             editor,
                             selector: '.toolbar.key'+k,
-                            config: toolbarConfig,
+                            config: {},
                             mode: 'default', // or 'simple'
                         })
                     }
