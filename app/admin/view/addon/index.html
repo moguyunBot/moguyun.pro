@@ -17,7 +17,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {foreach $addons as $v}
+                    {foreach $addons as $k=>$v}
                     <tr>
                         <td>{$v.title}</td>
                         <td>{$v.description}</td>
@@ -28,6 +28,30 @@
                             {else}
                             <a class="btn btn-xs btn-success" href="{:url('entrance',['addon_name'=>$v.name])}">进入</a>
                             {if $admin.group.rules=='*'}
+                            <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#bindDomain{$k}">域名绑定</button>
+                            <div class="modal fade" id="bindDomain{$k}" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h6 class="modal-title">{$v.title}绑定域名</h6>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label>域名</label>
+                                                <textarea type="text" class="form-control border" rows="5" style="resize:none;">{$v.domains??''}</textarea>
+                                            </div>
+                                            <small class="text-danger">支持多个域名,每行一个</small>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                                            <button type="button" class="btn btn-primary" @click="bindDomain('{$v.name}',$('#bindDomain{$k}').find('textarea').val())">保存</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <button class="btn btn-xs btn-danger" @click="uninstall('{$v.name}')">卸载</button>
                             {/if}
                             {/if}
@@ -48,6 +72,20 @@
             return {};
         },
         methods:{
+            bindDomain(name,val){
+                let domains = val.split('\n');
+                for(domain of domains){
+                    if(/^((https?|ftp):\/\/)?([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/.test(domain)==false){
+                        this.alert({code:0,msg:domain+'不是一个域名,请修改'})
+                        return;
+                    }
+                }
+                if(domains.length){
+                    this.post('bindDomain',{name:name,domains:domains},res=>{
+                        this.alert(res);
+                    })
+                }
+            },
             upload(e){
                 e.target
                 let data = new FormData()

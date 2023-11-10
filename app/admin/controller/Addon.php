@@ -52,6 +52,10 @@ class Addon extends Base{
                 if(!is_file($path.'/'.$dir.'/Plugin.php'))continue;
                 $info = get_addons_info($dir);
                 if(empty($info))continue;
+                $domains_path = public_path().'addons/'.$dir.'/domains.php';
+                if(is_file($domains_path)&&is_array(include($domains_path))){
+                    $info['domains'] = implode("\n",include($domains_path));
+                }
                 $addons[] = $info;
             }
         }
@@ -191,5 +195,27 @@ class Addon extends Base{
         $menus = Rule::children_menus($rules);
         $info = get_addons_info($this->get['addon_name']);
         return View::fetch('',['menus'=>$menus,'info'=>$info]);
+    }
+    
+    public function bindDomain(){
+        if($this->request->isPost()){
+            try{
+                validate([
+                    'name|插件名称'     =>  'require',
+                    'domains|域名'      =>  'require|array'
+                ])->check($this->post);
+                $domains_path = public_path().'addons/'.$this->post['name'].'/domains.php';
+                foreach($this->post['domains'] as $domain){
+                    if(!isDomain($domain)){
+                        throw new \Exception($domain.'不是一个域名,请修改');
+                    }
+                }
+                $str = var_export($this->post['domains'],true);
+                file_put_contents($domains_path,'<?php return '.$str.';');
+            }catch(\Exception $e){
+                return $this->error($e->getMessage()?:'设置失败');
+            }
+            return $this->success('设置成功');
+        }
     }
 }

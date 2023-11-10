@@ -115,3 +115,8 @@ function deleteDirectory($dir) {
 
     @rmdir($dir);
 }
+
+function isDomain($str) {
+    $pattern = '/^(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/';
+    return preg_match($pattern, $str);
+}
