@@ -46,69 +46,26 @@ class Service extends \think\Service
             if (is_file($this->app->addons->getAddonsPath() . 'middleware.php')) {
                 $this->app->middleware->import(include $this->app->addons->getAddonsPath() . 'middleware.php', 'route');
             }
-
-            // 注册控制器路由
-            $route->rule("addons/:addon/:controller/:action$", $execute)->middleware(Addons::class);
-            // 自定义路由
-            $routes = (array) Config::get('addons.route', []);
+            $request = $this->app->request;
+            
             foreach (scandir(public_path() . 'addons') as $v) {
                 if ($v == '.' || $v == '..') continue;
                 if(is_dir(public_path() . 'addons/' . $v)){
-                    $route_file = public_path() . 'addons/' . $v . '/route.php';
+                    $route_file = public_path() . 'addons/' . $v . '/domains.php';
                     if (is_file($route_file)) {
-                        $route_arr = include $route_file;
-                        if(is_array($route_arr)){
-                            foreach($route_arr as $kk=>$vv){
-                                if(is_array($vv)){
-                                    foreach($vv['rule'] as $kkk=>$vvv){
-                                        $route_arr[$kk]['rule'][$kkk] = $v.'/'.$vvv;
-                                    }
-                                }else{
-                                    $route_arr[$kk] = $v.'/'.$vv;
-                                }
-                            }
-                            $routes = array_merge($routes, $route_arr);
+                        $domain_arr = include $route_file;
+                        $domain_binds = array_keys(config('app.domain_bind'));
+                        if(!in_array($request->subDomain(),$domain_binds)&&is_array($domain_arr)&&in_array($request->subDomain().'.'.$request->rootDomain(),$domain_arr)){
+                            $route->rule("/", $execute)->append(['addon'=>$v])->middleware(Addons::class);
+                            $route->rule(":controller/[:action]$", $execute)->append(['addon'=>$v])->middleware(Addons::class);
+                            return;
                         }
                     }
                 }
             }
-            foreach ($routes as $key => $val) {
-                if (!$val) {
-                    continue;
-                }
-                if (is_array($val)) {
-                    $domain = $val['domain'];
-                    $rules = [];
-                    foreach ($val['rule'] as $k => $rule) {
-                        [$addon, $controller, $action] = explode('/', $rule);
-                        $rules[$k] = [
-                            'addon'        => $addon,
-                            'controller'    => $controller,
-                            'action'        => $action,
-                            'indomain'      => 1,
-                        ];
-                    }
-                    $route->domain($domain, function () use ($rules, $route, $execute) {
-                        // 动态注册域名的路由规则
-                        foreach ($rules as $k => $rule) {
-                            $route->rule($k, $execute)
-                                ->name($k)
-                                ->completeMatch(true)
-                                ->append($rule);
-                        }
-                    });
-                } else {
-                    list($addon, $controller, $action) = explode('/', $val);
-                    $route->rule($key, $execute)
-                        ->name($key)
-                        ->completeMatch(true)
-                        ->append([
-                            'addon' => $addon,
-                            'controller' => $controller,
-                            'action' => $action
-                        ]);
-                }
-            }
+            
+            // 注册控制器路由
+            $route->rule("addons/:addon/:controller/:action$", $execute)->middleware(Addons::class);
         });
     }
 

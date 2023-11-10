@@ -19,10 +19,9 @@ class Route
     {
         $app = app();
         $request = $app->request;
-
-        $addon = $request->route('addon');
-        $controller = $request->route('controller');
-        $action = $request->route('action');
+        $addon = $request->route('addon')?:$request->param('addon');
+        $controller = $request->route('controller')?:'index';
+        $action = $request->route('action')?:'index';
 
         Event::trigger('addons_begin', $request);
 

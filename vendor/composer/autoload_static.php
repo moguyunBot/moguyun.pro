@@ -65,11 +65,11 @@ class ComposerStaticInit548bd59e06dd7d63f2088b2cf93be45d
         array (
             0 => __DIR__ . '/..' . '/hulang/think-addons/src',
             1 => __DIR__ . '/..' . '/hulang/think-jump/src',
-            2 => __DIR__ . '/..' . '/topthink/think-filesystem/src',
-            3 => __DIR__ . '/..' . '/topthink/think-helper/src',
-            4 => __DIR__ . '/..' . '/topthink/think-orm/src',
-            5 => __DIR__ . '/..' . '/topthink/think-template/src',
-            6 => __DIR__ . '/..' . '/topthink/framework/src/think',
+            2 => __DIR__ . '/..' . '/topthink/framework/src/think',
+            3 => __DIR__ . '/..' . '/topthink/think-filesystem/src',
+            4 => __DIR__ . '/..' . '/topthink/think-helper/src',
+            5 => __DIR__ . '/..' . '/topthink/think-orm/src',
+            6 => __DIR__ . '/..' . '/topthink/think-template/src',
         ),
         'app\\' => 
         array (
