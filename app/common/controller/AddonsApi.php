@@ -2,7 +2,6 @@
 namespace app\common\controller;
 
 use think\facade\{Session};
-use app\admin\model\Admin;
 
 class AddonsApi extends \think\Addons{
     public $post = [];

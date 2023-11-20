@@ -23,17 +23,44 @@ class Config extends Base
             $configs_path = config_path().'configs.php';
         }
         if($this->request->isPost()){
-            foreach($this->post as $k=>$v){
-                foreach($v['configs'] as $k1=>$v1){
-                    if($v1['type']=='image'){
-                        if($this->request->file($k.$k1.'value')){
-                            $this->post[$k]['configs'][$k1]['value'] = upload($this->request->file($k.$k1.'value'));
+            try{
+                if(empty($this->post)){
+                    throw new \Exception('配置不能为空');
+                }
+                foreach($this->post as $k=>$v){
+                    foreach($v['configs'] as $k1=>$v1){
+                        if($v1['type']=='image'){
+                            if($this->request->file($k.$k1.'value')){
+                                $this->post[$k]['configs'][$k1]['value'] = upload($this->request->file($k.$k1.'value'));
+                            }
                         }
                     }
                 }
+                $str = var_export($this->post,true);
+                file_put_contents($configs_path,'<?php return '.$str.';');
+                
+                $configs = include(config_path().'configs.php');
+                $dirs = opendir(public_path().'addons');
+                
+                while (($dir = readdir($dirs)) !== FALSE) {
+                    if(in_array($dir,['.','..']))continue;
+                    if(is_dir(public_path().'addons/'.$dir)&&is_file(public_path().'addons/'.$dir.'/configs.php')){
+                        foreach(include(public_path().'addons/'.$dir.'/configs.php') as $key=>$val){
+                            $configs[$dir.'_'.$key] = $val;
+                        }
+                    }
+                }
+                foreach($configs as $k=>$v){
+                    $config = [];
+                    foreach($v['configs'] as $k1=>$v1){
+                        $config[$k1] = $v1['value'];
+                    }
+                    \think\facade\Config::set($config,$k);
+                }
+                hook('config');
+            }catch(\Exception $e){
+                return $this->error($e->getMessage()?:'修改失败');
             }
-            $str = var_export($this->post,true);
-            file_put_contents($configs_path,'<?php return '.$str.';');
             return $this->success('修改成功');
         }
         if(is_file($configs_path)){

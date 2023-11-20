@@ -27,7 +27,7 @@
                             <button class="btn btn-xs btn-success" @click="install('{$v.name}')">安装</button>
                             {else}
                             <a class="btn btn-xs btn-success" href="{:url('entrance',['addon_name'=>$v.name])}">进入</a>
-                            {if $admin.group.rules=='*'}
+                            {if $admin.group.rules=='*'&&is_file(public_path().'addons/'.$v['name'].'/domains.php')}
                             <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#bindDomain{$k}">域名绑定</button>
                             <div class="modal fade" id="bindDomain{$k}" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
                                 <div class="modal-dialog modal-dialog-centered" role="document">

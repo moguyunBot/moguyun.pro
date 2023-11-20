@@ -120,3 +120,24 @@ function isDomain($str) {
     $pattern = '/^(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/';
     return preg_match($pattern, $str);
 }
+
+function convertToNumber($input) {
+    // 尝试将字符串转换为整数
+    $intVal = filter_var($input, FILTER_VALIDATE_INT);
+    
+    // 如果是整数，直接返回
+    if ($intVal !== false) {
+        return $intVal;
+    }
+
+    // 尝试将字符串转换为浮点数
+    $floatVal = filter_var($input, FILTER_VALIDATE_FLOAT);
+
+    // 如果是浮点数，直接返回
+    if ($floatVal !== false) {
+        return $floatVal;
+    }
+
+    // 如果都不是，则返回原始字符串
+    return $input;
+}

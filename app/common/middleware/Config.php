@@ -23,6 +23,9 @@ class Config
         foreach($configs as $k=>$v){
             $config = [];
             foreach($v['configs'] as $k1=>$v1){
+                if(is_numeric($v1['value'])){
+                    $v1['value'] = convertToNumber($v1['value']);
+                }
                 $config[$k1] = $v1['value'];
             }
             \think\facade\Config::set($config,$k);
