@@ -24,7 +24,7 @@
         <ul class="nav nav-tabs nav-tabs-line">
             {foreach $configs as $k=>$v}
             <li class="nav-item">
-                <a href="{:url('',['key'=>$k])}" class="nav-link {if $Request.get.key==$k}active{/if}">{$v.name}</a>
+                <a href="{:url('',['addon_name'=>$Request.get.addon_name,'key'=>$k])}" class="nav-link {if $Request.get.key==$k}active{/if}">{$v.name}</a>
             </li>
             {/foreach}
         </ul>

@@ -2,6 +2,6 @@
 return array (
   'commands' => 
   array (
-    'install'   =>  'app\command\Install',
+    'storebot_recharge'   =>  'addons\storebot\Recharge',
   ),
 );

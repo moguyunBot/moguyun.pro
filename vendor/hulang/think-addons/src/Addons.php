@@ -42,10 +42,6 @@ abstract class Addons
         $this->view->config([
             'view_path' => $this->addon_path . 'view' . DIRECTORY_SEPARATOR
         ]);
-
-        if(file_exists($this->addon_path.'vendor/autoload.php')){
-            require_once($this->addon_path.'vendor/autoload.php');
-        }
         // 控制器初始化
         $this->initialize();
     }

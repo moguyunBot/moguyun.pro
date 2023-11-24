@@ -23,6 +23,9 @@ class Route
         $controller = $request->route('controller')?:'index';
         $action = $request->route('action')?:'index';
 
+        if(is_file(public_path().'addons/'.$addon.'/common.php')){
+            include(public_path().'addons/'.$addon.'/common.php');
+        }
         Event::trigger('addons_begin', $request);
 
         if (empty($addon) || empty($controller) || empty($action)) {

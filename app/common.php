@@ -7,8 +7,12 @@ function nonce_str($len=32){
     return $rands;
 }
 
-function upload($file){
-    $savename = \think\facade\Filesystem::disk('public')->putFile('topic', $file,'md5');
+function upload($file,$name=''){
+    if($name){
+        $savename = \think\facade\Filesystem::disk('public')->putFileAs('topic', $file,$name);
+    }else{
+        $savename = \think\facade\Filesystem::disk('public')->putFile('topic', $file,'md5');
+    }
     return '/storage/' . $savename;
 }
 

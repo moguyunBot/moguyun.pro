@@ -57,7 +57,7 @@ class Service extends \think\Service
                         $domain_binds = array_keys(config('app.domain_bind'));
                         if(!in_array($request->subDomain(),$domain_binds)&&is_array($domain_arr)&&in_array($request->subDomain().'.'.$request->rootDomain(),$domain_arr)){
                             $route->rule("/", $execute)->append(['addon'=>$v])->middleware(Addons::class);
-                            $route->rule(":controller/[:action]$", $execute)->append(['addon'=>$v])->middleware(Addons::class);
+                            $route->rule("[:controller]/[:action]$", $execute)->append(['addon'=>$v])->middleware(Addons::class);
                             return;
                         }
                     }
@@ -151,9 +151,6 @@ class Service extends \think\Service
             $info = pathinfo($addons_file);
             // 获取插件目录名
             $name = pathinfo($info['dirname'], PATHINFO_FILENAME);
-            if($info['basename']=='common.php'){
-                include($addons_file);
-            }
             // 找到插件入口文件
             if (strtolower($info['filename']) === 'plugin') {
                 // 读取出所有公共方法

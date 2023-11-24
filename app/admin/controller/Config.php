@@ -57,7 +57,9 @@ class Config extends Base
                     }
                     \think\facade\Config::set($config,$k);
                 }
-                hook('config');
+                if(!empty($this->get['addon_name'])){
+                    hook('config',$this->get['addon_name']);
+                }
             }catch(\Exception $e){
                 return $this->error($e->getMessage()?:'修改失败');
             }
